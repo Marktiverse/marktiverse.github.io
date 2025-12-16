@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>每日業績報告生成器</title>
+    <!-- 載入 Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 設定字體為 Inter，確保中文字體顯示清晰 */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* 隱藏預設的數字輸入欄位箭頭 */
+        input[type='number']::-webkit-inner-spin-button,
+        input[type='number']::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type='number'] {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto bg-white shadow-2xl rounded-xl p-6 md:p-10 border border-blue-100">
+        <h1 class="text-3xl font-extrabold text-blue-700 mb-6 text-center">
+            📞 台北三區每日速速回報 <!-- 標題已更新 -->
+        </h1>
+        <p class="text-gray-500 mb-8 text-center">
+            請輸入所有相關數據，並點擊「生成報告」以獲取標準格式文字。
+        </p>
+
+        <!-- 表單容器 -->
+        <form id="reportForm" class="space-y-8">
+
+            <!-- 基礎資訊 -->
+            <div class="p-6 bg-blue-50 rounded-lg shadow-inner">
+                <h2 class="text-xl font-semibold text-blue-600 mb-4 border-b pb-2">基本資訊</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="reportDate" class="block text-sm font-medium text-gray-700 mb-1">日期 (YYYY-MM-DD)</label>
+                        <input type="date" id="reportDate" required class="w-full p-3 border border-blue-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150">
+                    </div>
+                    <div>
+                        <label for="userName" class="block text-sm font-medium text-gray-700 mb-1">姓名</label>
+                        <input type="text" id="userName" placeholder="請輸入姓名" required class="w-full p-3 border border-blue-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 今日活動與成果 -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- 今日外撥 -->
+                <div class="p-6 bg-yellow-50 rounded-lg shadow-md col-span-1">
+                    <h2 class="text-xl font-semibold text-yellow-700 mb-4 border-b pb-2">今日外撥通數</h2>
+                    <div class="space-y-4">
+                        <label class="block">
+                            <span class="text-sm font-medium text-gray-700">潛客 (新案)</span>
+                            <input type="number" id="callsPotential" value="0" min="0" required class="mt-1 w-full p-3 border border-yellow-300 rounded-lg">
+                        </label>
+                        <label class="block">
+                            <span class="text-sm font-medium text-gray-700">過保 (舊客)</span>
+                            <input type="number" id="callsExpired" value="0" min="0" required class="mt-1 w-full p-3 border border-yellow-300 rounded-lg">
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 今日預約與到店 -->
+                <div class="p-6 bg-green-50 rounded-lg shadow-md col-span-2">
+                    <h2 class="text-xl font-semibold text-green-700 mb-4 border-b pb-2">今日活動概況</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <label class="block col-span-1">
+                            <span class="text-sm font-medium text-gray-700">今日預約 (總計)</span>
+                            <input type="number" id="appointmentsToday" value="0" min="0" required class="mt-1 w-full p-3 border border-green-300 rounded-lg">
+                        </label>
+                        <label class="block col-span-1">
+                            <span class="text-sm font-medium text-gray-700">到店總人數</span>
+                            <input type="number" id="storeVisitsTotal" value="0" min="0" required class="mt-1 w-full p-3 border border-green-300 rounded-lg">
+                        </label>
+                        <!-- 到店細項 (隱藏式，透過 JS 檢查總人數來控制視覺) -->
+                        <div class="col-span-3 grid grid-cols-3 gap-4 pt-2">
+                            <label class="block">
+                                <span class="text-xs font-medium text-gray-500">到店-過保</span>
+                                <input type="number" id="visitsExpired" value="0" min="0" required class="mt-1 w-full p-3 border border-green-300 rounded-lg text-sm">
+                            </label>
+                            <label class="block">
+                                <span class="text-xs font-medium text-gray-500">到店-保內</span>
+                                <input type="number" id="visitsInWarranty" value="0" min="0" required class="mt-1 w-full p-3 border border-green-300 rounded-lg text-sm">
+                            </label>
+                            <label class="block">
+                                <span class="text-xs font-medium text-gray-500">到店-新客</span>
+                            <input type="number" id="visitsNewCustomer" value="0" min="0" required class="mt-1 w-full p-3 border border-green-300 rounded-lg text-sm">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 試用與成交 -->
+            <div class="p-6 bg-red-50 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold text-red-700 mb-4 border-b pb-2">試用與成交結果</h2>
+                <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
+                    <label class="block">
+                        <span class="text-sm font-medium text-gray-700">試用 HA</span>
+                        <input type="number" id="trialHA" value="0" min="0" required class="mt-1 w-full p-3 border border-red-300 rounded-lg">
+                    </label>
+                    <label class="block">
+                        <span class="text-sm font-medium text-gray-700">試用 APAP</span>
+                        <input type="number" id="trialAPAP" value="0" min="0" required class="mt-1 w-full p-3 border border-red-300 rounded-lg">
+                    </label>
+                    <label class="block">
+                        <span class="text-sm font-medium text-gray-700">成交 HA</span>
+                        <input type="number" id="dealHA" value="0" min="0" required class="mt-1 w-full p-3 border border-red-300 rounded-lg">
+                    </label>
+                    <label class="block">
+                        <span class="text-sm font-medium text-gray-700">成交 APAP</span>
+                        <input type="number" id="dealAPAP" value="0" min="0" required class="mt-1 w-full p-3 border border-red-300 rounded-lg">
+                    </label>
+                </div>
+            </div>
+
+            <!-- 月度進度 -->
+            <div class="p-6 bg-purple-50 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold text-purple-700 mb-4 border-b pb-2">當月試聽進度</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label class="block">
+                        <span class="text-sm font-medium text-gray-700">目標人數 (位)</span>
+                        <input type="number" id="monthlyTarget" value="0" min="0" required class="mt-1 w-full p-3 border border-purple-300 rounded-lg">
+                    </label>
+                    <label class="block">
+                        <span class="text-sm font-medium text-gray-700">目前累計人數 (位)</span>
+                        <input type="number" id="monthlyCumulative" value="0" min="0" required class="mt-1 w-full p-3 border border-purple-300 rounded-lg">
+                    </label>
+                </div>
+            </div>
+
+            <!-- 明日計畫 -->
+            <div class="p-6 bg-indigo-50 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold text-indigo-700 mb-4 border-b pb-2">明日計畫</h2>
+                <div class="space-y-6">
+                    <!-- 明日預約細項 -->
+                    <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
+                        <label class="block col-span-2 md:col-span-1">
+                            <span class="text-sm font-medium text-gray-700">明日預約總數</span>
+                            <input type="number" id="tomorrowAppointments" value="0" min="0" required class="mt-1 w-full p-3 border border-indigo-300 rounded-lg">
+                        </label>
+                        <label class="block">
+                            <span class="text-xs font-medium text-gray-500">預約-過保</span>
+                            <input type="number" id="tomorrowApptsExpired" value="0" min="0" required class="mt-1 w-full p-3 border border-indigo-300 rounded-lg text-sm">
+                        </label>
+                        <label class="block">
+                            <span class="text-xs font-medium text-gray-500">預約-RS暫借</span>
+                            <input type="number" id="tomorrowApptsRSL" value="0" min="0" required class="mt-1 w-full p-3 border border-indigo-300 rounded-lg text-sm">
+                        </label>
+                        <label class="block">
+                            <span class="text-xs font-medium text-gray-500">預約-試聽</span>
+                            <input type="number" id="tomorrowApptsTrial" value="0" min="0" required class="mt-1 w-full p-3 border border-indigo-300 rounded-lg text-sm">
+                        </label>
+                    </div>
+
+                    <!-- 明日 KPI -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <label class="block">
+                            <span class="text-sm font-medium text-gray-700">明日 KPI：至少外撥 (通)</span>
+                            <input type="number" id="kpiCalls" value="0" min="0" required class="mt-1 w-full p-3 border border-indigo-300 rounded-lg">
+                        </label>
+                        <label class="block">
+                            <span class="text-sm font-medium text-gray-700">明日 KPI：試用目標 (位)</span>
+                            <input type="number" id="kpiTrials" value="0" min="0" required class="mt-1 w-full p-3 border border-indigo-300 rounded-lg">
+                        </label>
+                    </div>
+
+                    <!-- 明日外撥名單 -->
+                    <label class="block">
+                        <span class="text-sm font-medium text-gray-700">明日外撥名單 (請列點或換行)</span>
+                        <textarea id="callListTomorrow" rows="4" placeholder="請輸入外撥名單，每人一行" class="mt-1 w-full p-3 border border-indigo-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 生成按鈕 -->
+            <button type="button" onclick="generateReport()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition duration-300 ease-in-out transform hover:scale-[1.01] focus:outline-none focus:ring-4 focus:ring-blue-300">
+                🚀 生成報告
+            </button>
+        </form>
+
+        <!-- 報告輸出區 -->
+        <div id="outputArea" class="mt-10 pt-6 border-t border-gray-200 hidden">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 flex justify-between items-center">
+                報告內容
+                <button onclick="copyToClipboard()" id="copyBtn" class="bg-teal-500 hover:bg-teal-600 text-white text-sm font-medium py-1.5 px-3 rounded-lg transition duration-150">
+                    一鍵複製
+                </button>
+            </h2>
+            <textarea id="reportOutput" rows="15" readonly class="w-full p-4 border-2 border-dashed border-teal-400 bg-teal-50 text-gray-800 rounded-xl font-mono text-sm resize-none"></textarea>
+        </div>
+    </div>
+
+    <script>
+        // 確保在載入時自動設定今天的日期
+        window.onload = function() {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0'); // 月份是從 0 開始
+            const dd = String(today.getDate()).padStart(2, '0');
+            document.getElementById('reportDate').value = `${yyyy}-${mm}-${dd}`;
+        };
+
+        /**
+         * 獲取輸入欄位的值，並將數字欄位轉換為整數，確保為非負值。
+         * @param {string} id - 輸入欄位的 ID
+         * @returns {string | number}
+         */
+        function getInputValue(id) {
+            const element = document.getElementById(id);
+            if (!element) return 0; // 避免找不到元素時出錯
+
+            if (element.type === 'number') {
+                // 確保數值是整數且非負
+                return Math.max(0, parseInt(element.value, 10) || 0);
+            }
+            return element.value.trim();
+        }
+
+        /**
+         * 生成報告文字並顯示在輸出區
+         */
+        function generateReport() {
+            // 1. 取得所有輸入值
+            const date = getInputValue('reportDate');
+            const name = getInputValue('userName');
+
+            const callsPotential = getInputValue('callsPotential');
+            const callsExpired = getInputValue('callsExpired');
+            
+            const appointmentsToday = getInputValue('appointmentsToday');
+            const storeVisitsTotal = getInputValue('storeVisitsTotal');
+            const visitsExpired = getInputValue('visitsExpired');
+            const visitsInWarranty = getInputValue('visitsInWarranty');
+            const visitsNewCustomer = getInputValue('visitsNewCustomer');
+            
+            const trialHA = getInputValue('trialHA');
+            const trialAPAP = getInputValue('trialAPAP');
+            const dealHA = getInputValue('dealHA');
+            const dealAPAP = getInputValue('dealAPAP');
+            
+            const monthlyTarget = getInputValue('monthlyTarget');
+            const monthlyCumulative = getInputValue('monthlyCumulative');
+            
+            const tomorrowAppointments = getInputValue('tomorrowAppointments');
+            const tomorrowApptsExpired = getInputValue('tomorrowApptsExpired');
+            const tomorrowApptsRSL = getInputValue('tomorrowApptsRSL');
+            const tomorrowApptsTrial = getInputValue('tomorrowApptsTrial');
+            
+            const kpiCalls = getInputValue('kpiCalls');
+            const kpiTrials = getInputValue('kpiTrials');
+            
+            const callListTomorrow = getInputValue('callListTomorrow');
+
+            // 2. 進行計算
+            const monthlyMissing = Math.max(0, monthlyTarget - monthlyCumulative);
+
+            // 3. 檢查日期格式 (簡單檢查，確保是 YYYY-MM-DD 格式)
+            let formattedDate = date;
+            if (date && date.match(/^\d{4}-\d{2}-\d{2}$/)) {
+                // 如果是標準日期格式，就直接使用
+            } else {
+                // 否則，提醒或使用預設值
+                formattedDate = '未輸入日期';
+            }
+
+            // 4. 組合成要求的文字格式
+            const reportText = `【${formattedDate}｜姓名：${name}】
+今日外撥：潛客${callsPotential}通 + 過保${callsExpired}通
+今日預約： ${appointmentsToday}位
+今日到店： ${storeVisitsTotal}位 (${visitsExpired}位過保、${visitsInWarranty}位保內、${visitsNewCustomer}位新客)
+　試用：HA ${trialHA}・APAP ${trialAPAP}
+　成交：HA ${dealHA}・APAP ${dealAPAP}
+當月試聽進度：
+👉 目標${monthlyTarget}位｜目前累計${monthlyCumulative}位｜本月尚缺${monthlyMissing}位
+明日已排預約： ${tomorrowAppointments}位(${tomorrowApptsExpired}位過保、${tomorrowApptsRSL}位RS暫借、${tomorrowApptsTrial}位試聽）
+明日 KPI： 至少${kpiCalls}通外撥 + ${kpiTrials}位試用
+明日外撥名單：${callListTomorrow}`;
+
+            // 5. 顯示結果
+            document.getElementById('reportOutput').value = reportText;
+            document.getElementById('outputArea').classList.remove('hidden');
+
+            // 滾動到輸出區，方便用戶查看和複製
+            document.getElementById('outputArea').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        /**
+         * 複製報告文字到剪貼簿
+         */
+        function copyToClipboard() {
+            const copyText = document.getElementById("reportOutput");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); // For mobile devices
+
+            // 由於 navigator.clipboard 在 iframe 中可能有權限問題，使用 execCommand 作為備用
+            try {
+                const successful = document.execCommand('copy');
+                const copyBtn = document.getElementById('copyBtn');
+                
+                if (successful) {
+                    const originalText = copyBtn.textContent;
+                    copyBtn.textContent = '✅ 已複製！';
+                    copyBtn.classList.add('bg-green-600');
+                    copyBtn.classList.remove('bg-teal-500');
+                    setTimeout(() => {
+                        copyBtn.textContent = originalText;
+                        copyBtn.classList.add('bg-teal-500');
+                        copyBtn.classList.remove('bg-green-600');
+                    }, 1500);
+                } else {
+                    console.error('Fallback: document.execCommand("copy") failed.');
+                }
+            } catch (err) {
+                console.error('無法複製文字: ', err);
+                // 可以彈出一個提示框讓用戶手動複製
+            }
+        }
+    </script>
+</body>
+</html>
