@@ -58,11 +58,11 @@
                     <div class="space-y-4">
                         <label class="block">
                             <span class="text-sm font-medium text-gray-700">潛客 (新案)</span>
-                            <input type="number" id="callsPotential" value="0" min="0" required class="mt-1 w-full p-3 border border-yellow-300 rounded-lg">
+                            <input type="number" id="callsPotential" value="" min="0" required class="mt-1 w-full p-3 border border-yellow-300 rounded-lg">
                         </label>
                         <label class="block">
                             <span class="text-sm font-medium text-gray-700">過保 (舊客)</span>
-                            <input type="number" id="callsExpired" value="0" min="0" required class="mt-1 w-full p-3 border border-yellow-300 rounded-lg">
+                            <input type="number" id="callsExpired" value="" min="0" required class="mt-1 w-full p-3 border border-yellow-300 rounded-lg">
                         </label>
                     </div>
                 </div>
@@ -72,26 +72,26 @@
                     <h2 class="text-xl font-semibold text-green-700 mb-4 border-b pb-2">今日活動概況</h2>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <label class="block col-span-1">
-                            <span class="text-sm font-medium text-gray-700">今日預約 (總計)</span>
-                            <input type="number" id="appointmentsToday" value="0" min="0" required class="mt-1 w-full p-3 border border-green-300 rounded-lg">
+                            <span class="text-sm font-medium text-gray-700">今日預約</span>
+                            <input type="number" id="appointmentsToday" value="" min="0" required class="mt-1 w-full p-3 border border-green-300 rounded-lg">
                         </label>
                         <label class="block col-span-1">
                             <span class="text-sm font-medium text-gray-700">到店總人數</span>
-                            <input type="number" id="storeVisitsTotal" value="0" min="0" required class="mt-1 w-full p-3 border border-green-300 rounded-lg">
+                            <input type="number" id="storeVisitsTotal" value="" min="0" required class="mt-1 w-full p-3 border border-green-300 rounded-lg">
                         </label>
                         <!-- 到店細項 (隱藏式，透過 JS 檢查總人數來控制視覺) -->
                         <div class="col-span-3 grid grid-cols-3 gap-4 pt-2">
                             <label class="block">
                                 <span class="text-xs font-medium text-gray-500">到店-過保</span>
-                                <input type="number" id="visitsExpired" value="0" min="0" required class="mt-1 w-full p-3 border border-green-300 rounded-lg text-sm">
+                                <input type="number" id="visitsExpired" value="" min="0" required class="mt-1 w-full p-3 border border-green-300 rounded-lg text-sm">
                             </label>
                             <label class="block">
                                 <span class="text-xs font-medium text-gray-500">到店-保內</span>
-                                <input type="number" id="visitsInWarranty" value="0" min="0" required class="mt-1 w-full p-3 border border-green-300 rounded-lg text-sm">
+                                <input type="number" id="visitsInWarranty" value="" min="0" required class="mt-1 w-full p-3 border border-green-300 rounded-lg text-sm">
                             </label>
                             <label class="block">
                                 <span class="text-xs font-medium text-gray-500">到店-新客</span>
-                            <input type="number" id="visitsNewCustomer" value="0" min="0" required class="mt-1 w-full p-3 border border-green-300 rounded-lg text-sm">
+                            <input type="number" id="visitsNewCustomer" value="" min="0" required class="mt-1 w-full p-3 border border-green-300 rounded-lg text-sm">
                             </label>
                         </div>
                     </div>
@@ -104,19 +104,19 @@
                 <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
                     <label class="block">
                         <span class="text-sm font-medium text-gray-700">試用 HA</span>
-                        <input type="number" id="trialHA" value="0" min="0" required class="mt-1 w-full p-3 border border-red-300 rounded-lg">
+                        <input type="number" id="trialHA" value="" min="0" required class="mt-1 w-full p-3 border border-red-300 rounded-lg">
                     </label>
                     <label class="block">
                         <span class="text-sm font-medium text-gray-700">試用 APAP</span>
-                        <input type="number" id="trialAPAP" value="0" min="0" required class="mt-1 w-full p-3 border border-red-300 rounded-lg">
+                        <input type="number" id="trialAPAP" value="" min="0" required class="mt-1 w-full p-3 border border-red-300 rounded-lg">
                     </label>
                     <label class="block">
                         <span class="text-sm font-medium text-gray-700">成交 HA</span>
-                        <input type="number" id="dealHA" value="0" min="0" required class="mt-1 w-full p-3 border border-red-300 rounded-lg">
+                        <input type="number" id="dealHA" value="" min="0" required class="mt-1 w-full p-3 border border-red-300 rounded-lg">
                     </label>
                     <label class="block">
                         <span class="text-sm font-medium text-gray-700">成交 APAP</span>
-                        <input type="number" id="dealAPAP" value="0" min="0" required class="mt-1 w-full p-3 border border-red-300 rounded-lg">
+                        <input type="number" id="dealAPAP" value="" min="0" required class="mt-1 w-full p-3 border border-red-300 rounded-lg">
                     </label>
                 </div>
             </div>
@@ -127,11 +127,11 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <label class="block">
                         <span class="text-sm font-medium text-gray-700">目標人數 (位)</span>
-                        <input type="number" id="monthlyTarget" value="0" min="0" required class="mt-1 w-full p-3 border border-purple-300 rounded-lg">
+                        <input type="number" id="monthlyTarget" value="" min="0" required class="mt-1 w-full p-3 border border-purple-300 rounded-lg">
                     </label>
                     <label class="block">
                         <span class="text-sm font-medium text-gray-700">目前累計人數 (位)</span>
-                        <input type="number" id="monthlyCumulative" value="0" min="0" required class="mt-1 w-full p-3 border border-purple-300 rounded-lg">
+                        <input type="number" id="monthlyCumulative" value="" min="0" required class="mt-1 w-full p-3 border border-purple-300 rounded-lg">
                     </label>
                 </div>
             </div>
@@ -144,19 +144,19 @@
                     <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
                         <label class="block col-span-2 md:col-span-1">
                             <span class="text-sm font-medium text-gray-700">明日預約總數</span>
-                            <input type="number" id="tomorrowAppointments" value="0" min="0" required class="mt-1 w-full p-3 border border-indigo-300 rounded-lg">
+                            <input type="number" id="tomorrowAppointments" value="" min="0" required class="mt-1 w-full p-3 border border-indigo-300 rounded-lg">
                         </label>
                         <label class="block">
                             <span class="text-xs font-medium text-gray-500">預約-過保</span>
-                            <input type="number" id="tomorrowApptsExpired" value="0" min="0" required class="mt-1 w-full p-3 border border-indigo-300 rounded-lg text-sm">
+                            <input type="number" id="tomorrowApptsExpired" value="" min="0" required class="mt-1 w-full p-3 border border-indigo-300 rounded-lg text-sm">
                         </label>
                         <label class="block">
                             <span class="text-xs font-medium text-gray-500">預約-RS暫借</span>
-                            <input type="number" id="tomorrowApptsRSL" value="0" min="0" required class="mt-1 w-full p-3 border border-indigo-300 rounded-lg text-sm">
+                            <input type="number" id="tomorrowApptsRSL" value="" min="0" required class="mt-1 w-full p-3 border border-indigo-300 rounded-lg text-sm">
                         </label>
                         <label class="block">
                             <span class="text-xs font-medium text-gray-500">預約-試聽</span>
-                            <input type="number" id="tomorrowApptsTrial" value="0" min="0" required class="mt-1 w-full p-3 border border-indigo-300 rounded-lg text-sm">
+                            <input type="number" id="tomorrowApptsTrial" value="" min="0" required class="mt-1 w-full p-3 border border-indigo-300 rounded-lg text-sm">
                         </label>
                     </div>
 
@@ -164,11 +164,11 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <label class="block">
                             <span class="text-sm font-medium text-gray-700">明日 KPI：至少外撥 (通)</span>
-                            <input type="number" id="kpiCalls" value="0" min="0" required class="mt-1 w-full p-3 border border-indigo-300 rounded-lg">
+                            <input type="number" id="kpiCalls" value="" min="0" required class="mt-1 w-full p-3 border border-indigo-300 rounded-lg">
                         </label>
                         <label class="block">
                             <span class="text-sm font-medium text-gray-700">明日 KPI：試用目標 (位)</span>
-                            <input type="number" id="kpiTrials" value="0" min="0" required class="mt-1 w-full p-3 border border-indigo-300 rounded-lg">
+                            <input type="number" id="kpiTrials" value="" min="0" required class="mt-1 w-full p-3 border border-indigo-300 rounded-lg">
                         </label>
                     </div>
 
@@ -218,7 +218,9 @@
             if (!element) return 0; // 避免找不到元素時出錯
 
             if (element.type === 'number') {
-                // 確保數值是整數且非負
+                // 確保數值是整數且非負。
+                // parseInt(element.value, 10) 會將空字串解析為 NaN，
+                // NaN || 0 確保如果輸入為空，值會被視為 0，避免報告輸出 NaN。
                 return Math.max(0, parseInt(element.value, 10) || 0);
             }
             return element.value.trim();
