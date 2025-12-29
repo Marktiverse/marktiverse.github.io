@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>每日業績報告生成器</title>
+    <title>每日業績報告生成器 - 新春特別版</title>
     <!-- 載入 Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* 設定字體為 Inter，確保中文字體顯示清晰 */
         body {
             font-family: 'Inter', sans-serif;
+            /* 加入喜氣的背景紋理 */
+            background-color: #fff7ed; /* orange-50 */
+            background-image: radial-gradient(#fca5a5 1px, transparent 1px);
+            background-size: 24px 24px;
         }
         /* 隱藏預設的數字輸入欄位箭頭 */
         input[type='number']::-webkit-inner-spin-button,
@@ -24,82 +28,124 @@
         input[type='text'], input[type='date'], input[type='number'], textarea {
             min-height: 48px; /* 最小觸摸高度 */
         }
+        
+        /* 新春特別樣式 */
+        .cny-border {
+            border-color: #ef4444; /* red-500 */
+        }
+        .cny-header-text {
+            color: #b91c1c; /* red-700 */
+        }
+        .cny-card-bg {
+            background-color: #fef2f2; /* red-50 */
+        }
     </style>
 </head>
-<body class="bg-gray-50 p-4 md:p-8">
+<body class="p-4 md:p-8">
 
-    <div class="max-w-4xl mx-auto bg-white shadow-2xl rounded-xl p-4 md:p-10 border border-blue-100">
-        <h1 class="text-2xl sm:text-3xl font-extrabold text-blue-700 mb-6 text-center">
-            📞 台北三區每日速速回報
+    <div class="max-w-4xl mx-auto bg-white/95 shadow-2xl rounded-xl p-4 md:p-10 border-2 border-red-200 relative overflow-hidden">
+        <!-- 裝飾元素 -->
+        <div class="absolute top-0 left-0 w-20 h-20 bg-red-500 transform -rotate-45 -translate-x-10 -translate-y-10 z-0"></div>
+        <div class="absolute top-0 right-0 w-20 h-20 bg-red-500 transform rotate-45 translate-x-10 -translate-y-10 z-0"></div>
+        
+        <h1 class="relative z-10 text-2xl sm:text-3xl font-extrabold text-red-700 mb-2 text-center flex justify-center items-center gap-2">
+            🏮 台北三區每日速速回報 🏮
         </h1>
-        <p class="text-gray-500 mb-8 text-center text-sm sm:text-base">
-            請輸入所有相關數據，並點擊「生成報告」以獲取標準格式文字。
+        <p class="text-amber-600 mb-8 text-center text-sm sm:text-base font-medium">
+            ✨ 新春報喜！祝您業績長紅，開工大吉 ✨
         </p>
 
         <!-- 表單容器 -->
-        <form id="reportForm" class="space-y-6 sm:space-y-8">
+        <form id="reportForm" class="space-y-6 sm:space-y-8 relative z-10">
 
             <!-- 基礎資訊 -->
-            <div class="p-4 sm:p-6 bg-blue-50 rounded-lg shadow-inner">
-                <h2 class="text-lg sm:text-xl font-semibold text-blue-600 mb-4 border-b pb-2">基本資訊</h2>
+            <div class="p-4 sm:p-6 bg-red-50 rounded-lg shadow-inner border border-red-100">
+                <h2 class="text-lg sm:text-xl font-bold text-red-800 mb-4 border-b border-red-200 pb-2 flex items-center gap-2">
+                    🧧 基本資訊
+                </h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label for="reportDate" class="block text-sm font-medium text-gray-700 mb-1">日期 (YYYY-MM-DD)</label>
-                        <input type="date" id="reportDate" required class="w-full p-3 border border-blue-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150">
+                        <label for="reportDate" class="block text-sm font-medium text-red-900 mb-1">日期 (YYYY-MM-DD)</label>
+                        <input type="date" id="reportDate" required class="w-full p-3 border border-red-300 rounded-lg focus:ring-red-500 focus:border-red-500 transition duration-150 bg-white">
                     </div>
                     <div>
-                        <label for="userName" class="block text-sm font-medium text-gray-700 mb-1">姓名</label>
-                        <input type="text" id="userName" placeholder="請輸入姓名" required class="w-full p-3 border border-blue-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150">
+                        <label for="userName" class="block text-sm font-medium text-red-900 mb-1">姓名</label>
+                        <input type="text" id="userName" placeholder="請輸入姓名" required class="w-full p-3 border border-red-300 rounded-lg focus:ring-red-500 focus:border-red-500 transition duration-150 bg-white">
                     </div>
                 </div>
             </div>
 
             <!-- 今日活動與成果 -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
                 <!-- 今日外撥 -->
-                <div class="p-4 sm:p-6 bg-yellow-50 rounded-lg shadow-md col-span-1">
-                    <h2 class="text-lg sm:text-xl font-semibold text-yellow-700 mb-4 border-b pb-2">今日外撥通數</h2>
-                    <div class="space-y-4">
-                        <label class="block">
-                            <span class="text-sm font-medium text-gray-700">潛客 (新案)</span>
-                            <input type="number" id="callsPotential" value="" min="0" required class="mt-1 w-full p-3 border border-yellow-300 rounded-lg">
-                        </label>
-                        <label class="block">
-                            <span class="text-sm font-medium text-gray-700">過保 (舊客)</span>
-                            <input type="number" id="callsExpired" value="" min="0" required class="mt-1 w-full p-3 border border-yellow-300 rounded-lg">
-                        </label>
+                <div class="p-4 sm:p-6 bg-amber-50 rounded-lg shadow-md col-span-1 lg:col-span-2 border border-amber-200">
+                    <h2 class="text-lg sm:text-xl font-bold text-amber-800 mb-4 border-b border-amber-200 pb-2 flex items-center gap-2">
+                        📞 今日外撥成效
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- 新客區塊 -->
+                        <div class="space-y-3 p-3 bg-white/60 rounded-lg border border-amber-100">
+                            <h3 class="font-bold text-amber-900 border-b border-amber-200 pb-1">新客 (Potential)</h3>
+                            <div class="flex gap-4">
+                                <label class="block w-1/2">
+                                    <span class="text-sm font-medium text-amber-800">外撥 (通)</span>
+                                    <input type="number" id="callsNew" value="" min="0" required class="mt-1 w-full p-3 border border-amber-300 rounded-lg bg-white focus:ring-amber-500 focus:border-amber-500">
+                                </label>
+                                <label class="block w-1/2">
+                                    <span class="text-sm font-medium text-amber-800">邀約 (位)</span>
+                                    <input type="number" id="callsNewInvited" value="" min="0" required class="mt-1 w-full p-3 border border-amber-300 rounded-lg bg-white focus:ring-amber-500 focus:border-amber-500">
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- 舊客區塊 -->
+                        <div class="space-y-3 p-3 bg-white/60 rounded-lg border border-amber-100">
+                            <h3 class="font-bold text-amber-900 border-b border-amber-200 pb-1">舊客 (Expired/Existing)</h3>
+                            <div class="flex gap-4">
+                                <label class="block w-1/2">
+                                    <span class="text-sm font-medium text-amber-800">外撥 (通)</span>
+                                    <input type="number" id="callsOld" value="" min="0" required class="mt-1 w-full p-3 border border-amber-300 rounded-lg bg-white focus:ring-amber-500 focus:border-amber-500">
+                                </label>
+                                <label class="block w-1/2">
+                                    <span class="text-sm font-medium text-amber-800">邀約 (位)</span>
+                                    <input type="number" id="callsOldInvited" value="" min="0" required class="mt-1 w-full p-3 border border-amber-300 rounded-lg bg-white focus:ring-amber-500 focus:border-amber-500">
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- 今日預約與到店 -->
-                <div class="p-4 sm:p-6 bg-green-50 rounded-lg shadow-md col-span-1 lg:col-span-2">
-                    <h2 class="text-lg sm:text-xl font-semibold text-green-700 mb-4 border-b pb-2">今日活動概況</h2>
+                <div class="p-4 sm:p-6 bg-emerald-50 rounded-lg shadow-md col-span-1 lg:col-span-2 border border-emerald-200">
+                    <h2 class="text-lg sm:text-xl font-bold text-emerald-800 mb-4 border-b border-emerald-200 pb-2 flex items-center gap-2">
+                        👣 今日活動概況
+                    </h2>
                     <!-- 調整為在手機上垂直堆疊 (grid-cols-1)，螢幕達到 sm: 尺寸才並排 (sm:grid-cols-2) -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4"> 
                         <label class="block">
-                            <span class="text-sm font-medium text-gray-700">今日預約</span>
-                            <input type="number" id="appointmentsToday" value="" min="0" required class="mt-1 w-full p-3 border border-green-300 rounded-lg">
+                            <span class="text-sm font-medium text-emerald-900">今日預約</span>
+                            <input type="number" id="appointmentsToday" value="" min="0" required class="mt-1 w-full p-3 border border-emerald-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500">
                         </label>
                         <label class="block">
-                            <span class="text-sm font-medium text-gray-700">到店總人數</span>
-                            <input type="number" id="storeVisitsTotal" value="" min="0" required class="mt-1 w-full p-3 border border-green-300 rounded-lg">
+                            <span class="text-sm font-medium text-emerald-900">到店總人數</span>
+                            <input type="number" id="storeVisitsTotal" value="" min="0" required class="mt-1 w-full p-3 border border-emerald-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500">
                         </label>
                     </div>
                     <!-- 到店細項：在手機上使用兩欄布局，平板以上使用三欄 -->
-                    <div class="pt-4 mt-4 border-t border-green-200">
-                        <p class="text-sm font-semibold text-green-600 mb-2">到店分類人數</p>
+                    <div class="pt-4 mt-4 border-t border-emerald-200">
+                        <p class="text-sm font-semibold text-emerald-700 mb-2">到店分類人數</p>
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
                             <label class="block">
                                 <span class="text-xs font-medium text-gray-500">到店-過保</span>
-                                <input type="number" id="visitsExpired" value="" min="0" required class="mt-1 w-full p-3 border border-green-300 rounded-lg text-sm">
+                                <input type="number" id="visitsExpired" value="" min="0" required class="mt-1 w-full p-3 border border-emerald-300 rounded-lg text-sm focus:ring-emerald-500 focus:border-emerald-500">
                             </label>
                             <label class="block">
                                 <span class="text-xs font-medium text-gray-500">到店-保內</span>
-                                <input type="number" id="visitsInWarranty" value="" min="0" required class="mt-1 w-full p-3 border border-green-300 rounded-lg text-sm">
+                                <input type="number" id="visitsInWarranty" value="" min="0" required class="mt-1 w-full p-3 border border-emerald-300 rounded-lg text-sm focus:ring-emerald-500 focus:border-emerald-500">
                             </label>
                             <label class="block">
                                 <span class="text-xs font-medium text-gray-500">到店-新客</span>
-                                <input type="number" id="visitsNewCustomer" value="" min="0" required class="mt-1 w-full p-3 border border-green-300 rounded-lg text-sm">
+                                <input type="number" id="visitsNewCustomer" value="" min="0" required class="mt-1 w-full p-3 border border-emerald-300 rounded-lg text-sm focus:ring-emerald-500 focus:border-emerald-500">
                             </label>
                         </div>
                     </div>
@@ -107,103 +153,119 @@
             </div>
 
             <!-- 試用與成交 -->
-            <div class="p-4 sm:p-6 bg-red-50 rounded-lg shadow-md">
-                <h2 class="text-lg sm:text-xl font-semibold text-red-700 mb-4 border-b pb-2">試用與成交結果</h2>
-                <!-- 在手機上使用兩欄，平板以上使用四欄 -->
-                <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
+            <div class="p-4 sm:p-6 bg-red-50 rounded-lg shadow-md border border-red-200">
+                <h2 class="text-lg sm:text-xl font-bold text-red-800 mb-4 border-b border-red-200 pb-2 flex items-center gap-2">
+                    💰 試用與成交結果
+                </h2>
+                <!-- 在手機上使用兩欄，平板以上使用四欄，這裡稍微調整佈局以容納新欄位 -->
+                <div class="grid grid-cols-2 gap-4 md:grid-cols-5">
                     <label class="block">
-                        <span class="text-sm font-medium text-gray-700">試用 HA</span>
-                        <input type="number" id="trialHA" value="" min="0" required class="mt-1 w-full p-3 border border-red-300 rounded-lg">
+                        <span class="text-sm font-medium text-gray-700">試用 HA (位)</span>
+                        <input type="number" id="trialHA" value="" min="0" required class="mt-1 w-full p-3 border border-red-300 rounded-lg focus:ring-red-500 focus:border-red-500">
                     </label>
                     <label class="block">
                         <span class="text-sm font-medium text-gray-700">試用 APAP</span>
-                        <input type="number" id="trialAPAP" value="" min="0" required class="mt-1 w-full p-3 border border-red-300 rounded-lg">
+                        <input type="number" id="trialAPAP" value="" min="0" required class="mt-1 w-full p-3 border border-red-300 rounded-lg focus:ring-red-500 focus:border-red-500">
                     </label>
                     <label class="block">
                         <span class="text-sm font-medium text-gray-700">成交 HA</span>
-                        <input type="number" id="dealHA" value="" min="0" required class="mt-1 w-full p-3 border border-red-300 rounded-lg">
+                        <input type="number" id="dealHA" value="" min="0" required class="mt-1 w-full p-3 border border-red-300 rounded-lg focus:ring-red-500 focus:border-red-500">
                     </label>
                     <label class="block">
                         <span class="text-sm font-medium text-gray-700">成交 APAP</span>
-                        <input type="number" id="dealAPAP" value="" min="0" required class="mt-1 w-full p-3 border border-red-300 rounded-lg">
+                        <input type="number" id="dealAPAP" value="" min="0" required class="mt-1 w-full p-3 border border-red-300 rounded-lg focus:ring-red-500 focus:border-red-500">
+                    </label>
+                    <label class="block md:col-span-1 col-span-2">
+                        <span class="text-sm font-medium text-red-800">成交總金額 (萬)</span>
+                        <input type="number" id="dealTotalRevenue" value="" min="0" placeholder="發發發" required class="mt-1 w-full p-3 border-2 border-red-400 rounded-lg bg-red-50 focus:ring-red-500 focus:border-red-500">
                     </label>
                 </div>
             </div>
 
             <!-- 月度進度 -->
-            <div class="p-4 sm:p-6 bg-purple-50 rounded-lg shadow-md">
-                <h2 class="text-lg sm:text-xl font-semibold text-purple-700 mb-4 border-b pb-2">當月試聽進度</h2>
+            <div class="p-4 sm:p-6 bg-purple-50 rounded-lg shadow-md border border-purple-200">
+                <h2 class="text-lg sm:text-xl font-bold text-purple-800 mb-4 border-b border-purple-200 pb-2 flex items-center gap-2">
+                    📈 當月試聽進度
+                </h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <label class="block">
-                        <span class="text-sm font-medium text-gray-700">目標人數 (位)</span>
-                        <input type="number" id="monthlyTarget" value="" min="0" required class="mt-1 w-full p-3 border border-purple-300 rounded-lg">
+                        <span class="text-sm font-medium text-purple-900">試聽目標 (位)</span>
+                        <input type="number" id="monthlyTarget" value="" min="0" required class="mt-1 w-full p-3 border border-purple-300 rounded-lg focus:ring-purple-500 focus:border-purple-500">
                     </label>
                     <label class="block">
-                        <span class="text-sm font-medium text-gray-700">目前累計人數 (位)</span>
-                        <input type="number" id="monthlyCumulative" value="" min="0" required class="mt-1 w-full p-3 border border-purple-300 rounded-lg">
+                        <span class="text-sm font-medium text-purple-900">目前累計人數 (位)</span>
+                        <input type="number" id="monthlyCumulative" value="" min="0" required class="mt-1 w-full p-3 border border-purple-300 rounded-lg focus:ring-purple-500 focus:border-purple-500">
                     </label>
                 </div>
             </div>
 
             <!-- 明日計畫 -->
-            <div class="p-4 sm:p-6 bg-indigo-50 rounded-lg shadow-md">
-                <h2 class="text-lg sm:text-xl font-semibold text-indigo-700 mb-4 border-b pb-2">明日計畫</h2>
+            <div class="p-4 sm:p-6 bg-orange-50 rounded-lg shadow-md border border-orange-200">
+                <h2 class="text-lg sm:text-xl font-bold text-orange-800 mb-4 border-b border-orange-200 pb-2 flex items-center gap-2">
+                    📅 明日計畫
+                </h2>
                 <div class="space-y-6">
                     <!-- 明日預約細項：手機上兩欄，平板以上四欄 -->
                     <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
                         <label class="block col-span-2 sm:col-span-1">
-                            <span class="text-sm font-medium text-gray-700">明日預約總數</span>
-                            <input type="number" id="tomorrowAppointments" value="" min="0" required class="mt-1 w-full p-3 border border-indigo-300 rounded-lg">
+                            <span class="text-sm font-medium text-orange-900">明日預約總數</span>
+                            <input type="number" id="tomorrowAppointments" value="" min="0" required class="mt-1 w-full p-3 border border-orange-300 rounded-lg focus:ring-orange-500 focus:border-orange-500">
                         </label>
                         <label class="block">
                             <span class="text-xs font-medium text-gray-500">預約-過保</span>
-                            <input type="number" id="tomorrowApptsExpired" value="" min="0" required class="mt-1 w-full p-3 border border-indigo-300 rounded-lg text-sm">
+                            <input type="number" id="tomorrowApptsExpired" value="" min="0" required class="mt-1 w-full p-3 border border-orange-300 rounded-lg text-sm focus:ring-orange-500 focus:border-orange-500">
                         </label>
                         <label class="block">
                             <span class="text-xs font-medium text-gray-500">預約-RS暫借</span>
-                            <input type="number" id="tomorrowApptsRSL" value="" min="0" required class="mt-1 w-full p-3 border border-indigo-300 rounded-lg text-sm">
+                            <input type="number" id="tomorrowApptsRSL" value="" min="0" required class="mt-1 w-full p-3 border border-orange-300 rounded-lg text-sm focus:ring-orange-500 focus:border-orange-500">
                         </label>
                         <label class="block">
                             <span class="text-xs font-medium text-gray-500">預約-試聽</span>
-                            <input type="number" id="tomorrowApptsTrial" value="" min="0" required class="mt-1 w-full p-3 border border-indigo-300 rounded-lg text-sm">
+                            <input type="number" id="tomorrowApptsTrial" value="" min="0" required class="mt-1 w-full p-3 border border-orange-300 rounded-lg text-sm focus:ring-orange-500 focus:border-orange-500">
                         </label>
                     </div>
+
+                    <!-- 明日攻單重點 -->
+                    <label class="block">
+                        <span class="text-sm font-medium text-orange-900">明日攻單重點預計產出 (萬)</span>
+                        <input type="number" id="tomorrowRevenue" value="" min="0" placeholder="例如: 5" required class="mt-1 w-full p-3 border border-orange-300 rounded-lg focus:ring-orange-500 focus:border-orange-500">
+                    </label>
 
                     <!-- 明日 KPI -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <label class="block">
-                            <span class="text-sm font-medium text-gray-700">明日 KPI：至少外撥 (通)</span>
-                            <input type="number" id="kpiCalls" value="" min="0" required class="mt-1 w-full p-3 border border-indigo-300 rounded-lg">
+                            <span class="text-sm font-medium text-orange-900">明日 KPI：至少外撥 (通)</span>
+                            <input type="number" id="kpiCalls" value="" min="0" required class="mt-1 w-full p-3 border border-orange-300 rounded-lg focus:ring-orange-500 focus:border-orange-500">
                         </label>
                         <label class="block">
-                            <span class="text-sm font-medium text-gray-700">明日 KPI：試用目標 (位)</span>
-                            <input type="number" id="kpiTrials" value="" min="0" required class="mt-1 w-full p-3 border border-indigo-300 rounded-lg">
+                            <span class="text-sm font-medium text-orange-900">明日 KPI：試用目標 (位)</span>
+                            <input type="number" id="kpiTrials" value="" min="0" required class="mt-1 w-full p-3 border border-orange-300 rounded-lg focus:ring-orange-500 focus:border-orange-500">
                         </label>
                     </div>
 
                     <!-- 明日外撥名單 -->
                     <label class="block">
-                        <span class="text-sm font-medium text-gray-700">明日外撥名單 (請列點或換行)</span>
-                        <textarea id="callListTomorrow" rows="4" placeholder="請輸入外撥名單，每人一行" class="mt-1 w-full p-3 border border-indigo-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                        <span class="text-sm font-medium text-orange-900">明日外撥名單 (請列點或換行)</span>
+                        <textarea id="callListTomorrow" rows="4" placeholder="請輸入外撥名單，每人一行" class="mt-1 w-full p-3 border border-orange-300 rounded-lg focus:ring-orange-500 focus:border-orange-500"></textarea>
                     </label>
                 </div>
             </div>
 
             <!-- 生成按鈕 -->
-            <button type="button" onclick="generateReport()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition duration-300 ease-in-out transform hover:scale-[1.01] focus:outline-none focus:ring-4 focus:ring-blue-300">
-                🚀 生成報告
+            <button type="button" onclick="generateReport()" class="w-full bg-red-600 hover:bg-red-700 text-yellow-100 font-bold py-3 px-4 rounded-xl shadow-lg transition duration-300 ease-in-out transform hover:scale-[1.01] focus:outline-none focus:ring-4 focus:ring-red-300 border-2 border-red-500">
+                🧨 生成開運報告 🧨
             </button>
         </form>
 
         <!-- 報告輸出區 -->
-        <div id="outputArea" class="mt-8 sm:mt-10 pt-6 border-t border-gray-200 hidden">
-            <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4 flex justify-between items-center">
-                報告內容
-                <button onclick="copyToClipboard()" id="copyBtn" class="bg-teal-500 hover:bg-teal-600 text-white text-sm font-medium py-2 px-3 rounded-lg transition duration-150">
+        <div id="outputArea" class="mt-8 sm:mt-10 pt-6 border-t-2 border-red-100 hidden">
+            <h2 class="text-xl sm:text-2xl font-bold text-red-800 mb-4 flex justify-between items-center">
+                <span>📜 報告內容</span>
+                <button onclick="copyToClipboard()" id="copyBtn" class="bg-amber-500 hover:bg-amber-600 text-white text-sm font-medium py-2 px-3 rounded-lg transition duration-150 shadow-md">
                     一鍵複製
                 </button>
             </h2>
-            <textarea id="reportOutput" rows="15" readonly class="w-full p-4 border-2 border-dashed border-teal-400 bg-teal-50 text-gray-800 rounded-xl font-mono text-sm resize-none"></textarea>
+            <textarea id="reportOutput" rows="15" readonly class="w-full p-4 border-2 border-dashed border-red-400 bg-red-50 text-gray-800 rounded-xl font-mono text-sm resize-none focus:outline-none"></textarea>
         </div>
     </div>
 
@@ -243,8 +305,11 @@
             const date = getInputValue('reportDate');
             const name = getInputValue('userName');
 
-            const callsPotential = getInputValue('callsPotential');
-            const callsExpired = getInputValue('callsExpired');
+            // 拆分後的外撥數據
+            const callsNew = getInputValue('callsNew');
+            const callsNewInvited = getInputValue('callsNewInvited');
+            const callsOld = getInputValue('callsOld');
+            const callsOldInvited = getInputValue('callsOldInvited');
             
             const appointmentsToday = getInputValue('appointmentsToday');
             const storeVisitsTotal = getInputValue('storeVisitsTotal');
@@ -256,6 +321,7 @@
             const trialAPAP = getInputValue('trialAPAP');
             const dealHA = getInputValue('dealHA');
             const dealAPAP = getInputValue('dealAPAP');
+            const dealTotalRevenue = getInputValue('dealTotalRevenue'); // 新增：成交總金額
             
             const monthlyTarget = getInputValue('monthlyTarget');
             const monthlyCumulative = getInputValue('monthlyCumulative');
@@ -265,6 +331,8 @@
             const tomorrowApptsRSL = getInputValue('tomorrowApptsRSL');
             const tomorrowApptsTrial = getInputValue('tomorrowApptsTrial');
             
+            const tomorrowRevenue = getInputValue('tomorrowRevenue');
+
             const kpiCalls = getInputValue('kpiCalls');
             const kpiTrials = getInputValue('kpiTrials');
             
@@ -284,15 +352,15 @@
 
             // 4. 組合成要求的文字格式
             const reportText = `【${formattedDate}｜姓名：${name}】
-今日外撥：潛客${callsPotential}通 + 過保${callsExpired}通
-今日預約： ${appointmentsToday}位
-今日到店： ${storeVisitsTotal}位 (${visitsExpired}位過保、${visitsInWarranty}位保內、${visitsNewCustomer}位新客)
-　試用：HA ${trialHA}・APAP ${trialAPAP}
-　成交：HA ${dealHA}・APAP ${dealAPAP}
+今日外撥：新客${callsNew} 通 (成功邀約 ${callsNewInvited} 位)|舊客${callsOld}通 (成功邀約 ${callsOldInvited} 位)
+今日預約：${appointmentsToday} 位今日到店：${storeVisitsTotal} 位 (${visitsExpired}位過保、${visitsInWarranty}位保內、${visitsNewCustomer}位新客)
+　試用：HA ${trialHA} 位 ・APAP ${trialAPAP} 位
+　成交：HA ${dealHA} 位・APAP ${dealAPAP} 位(成交總金額 ${dealTotalRevenue}萬)
 當月試聽進度：
-👉 目標${monthlyTarget}位｜目前累計${monthlyCumulative}位｜本月尚缺${monthlyMissing}位
-明日已排預約： ${tomorrowAppointments}位(${tomorrowApptsExpired}位過保、${tomorrowApptsRSL}位RS暫借、${tomorrowApptsTrial}位試聽）
-明日 KPI： 至少${kpiCalls}通外撥 + ${kpiTrials}位試用
+👉 試聽目標 ${monthlyTarget} 位｜目前累計 ${monthlyCumulative} 位｜本月尚缺 ${monthlyMissing} 位
+明日已排預約：${tomorrowAppointments} 位 (${tomorrowApptsExpired}位過保、${tomorrowApptsRSL}位RS暫借、${tomorrowApptsTrial}位試聽）
+明日攻單重點預計產出：${tomorrowRevenue}萬
+明日 KPI：至少 ${kpiCalls} 通外撥 + ${kpiTrials} 位試用
 明日外撥名單：${callListTomorrow}`;
 
             // 5. 顯示結果
@@ -320,10 +388,10 @@
                     const originalText = copyBtn.textContent;
                     copyBtn.textContent = '✅ 已複製！';
                     copyBtn.classList.add('bg-green-600');
-                    copyBtn.classList.remove('bg-teal-500');
+                    copyBtn.classList.remove('bg-amber-500');
                     setTimeout(() => {
                         copyBtn.textContent = originalText;
-                        copyBtn.classList.add('bg-teal-500');
+                        copyBtn.classList.add('bg-amber-500');
                         copyBtn.classList.remove('bg-green-600');
                     }, 1500);
                 } else {
