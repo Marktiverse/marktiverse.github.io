@@ -16,9 +16,9 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
-            background-color: #7f1d1d; /* 深紅底色 */
+            background-color: #fdf2f8; /* 櫻花粉底色 */
             background-image: 
-                radial-gradient(circle at 2px 2px, rgba(245, 158, 11, 0.15) 1px, transparent 0);
+                radial-gradient(circle at 2px 2px, rgba(236, 72, 153, 0.15) 1px, transparent 0);
             background-size: 32px 32px;
             overflow-x: hidden;
         }
@@ -38,6 +38,23 @@
             to {
                 transform: translateY(105vh) rotate(360deg);
             }
+        }
+
+        /* 連續櫻花飄落動畫 */
+        .petal {
+            position: absolute;
+            user-select: none;
+            pointer-events: none;
+            z-index: 40;
+            animation: fall-petal linear forwards;
+            filter: drop-shadow(0 2px 4px rgba(236, 72, 153, 0.3));
+        }
+
+        @keyframes fall-petal {
+            0% { top: -5vh; transform: translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { top: 105vh; transform: translateX(15vw) rotate(360deg); opacity: 0; }
         }
 
         input, textarea {
@@ -70,36 +87,39 @@
 </head>
 <body class="p-2 sm:p-4 md:p-8">
 
+    <!-- 連續櫻花容器 -->
+    <div id="petalContainer" class="fixed inset-0 pointer-events-none z-[40] overflow-hidden"></div>
+
     <!-- 紅包容器 -->
     <div id="hongbaoContainer"></div>
 
     <!-- 歷史回顧小視窗 (預設隱藏) -->
-    <div id="historyPopup" class="fixed top-4 right-4 z-[100] w-72 bg-white border-2 border-amber-400 rounded-xl shadow-2xl p-4 hidden history-card">
+    <div id="historyPopup" class="fixed top-4 right-4 z-[100] w-72 bg-white border-2 border-blue-400 rounded-xl shadow-2xl p-4 hidden history-card">
         <div class="flex justify-between items-start mb-2">
-            <h4 class="font-bold text-red-700 text-sm">📅 上次進度回顧</h4>
-            <button onclick="document.getElementById('historyPopup').classList.add('hidden')" class="text-gray-400 hover:text-red-500">✕</button>
+            <h4 class="font-bold text-blue-700 text-sm">📅 上次進度回顧</h4>
+            <button onclick="document.getElementById('historyPopup').classList.add('hidden')" class="text-gray-400 hover:text-blue-500">✕</button>
         </div>
         <div id="historyContent" class="text-xs space-y-1 text-gray-700">
             <!-- 動態注入內容 -->
         </div>
-        <button onclick="applyHistory()" class="w-full mt-3 bg-amber-100 hover:bg-amber-200 text-amber-800 text-[10px] py-1 rounded font-bold transition-colors">
+        <button onclick="applyHistory()" class="w-full mt-3 bg-blue-50 hover:bg-blue-100 text-blue-800 text-[10px] py-1 rounded font-bold transition-colors">
             帶入部分累計數據
         </button>
     </div>
 
-    <div class="max-w-4xl mx-auto bg-white/95 shadow-2xl rounded-2xl p-4 sm:p-6 md:p-10 border-4 border-amber-400 relative overflow-hidden container-box">
+    <div class="max-w-4xl mx-auto bg-white/95 shadow-2xl rounded-2xl p-4 sm:p-6 md:p-10 border-4 border-pink-300 relative overflow-hidden container-box">
         
-        <div class="absolute -top-10 -right-10 w-40 h-40 bg-red-100 rounded-full opacity-50"></div>
-        <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-red-100 rounded-full opacity-50"></div>
+        <div class="absolute -top-10 -right-10 w-40 h-40 bg-pink-100 rounded-full opacity-50"></div>
+        <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-blue-100 rounded-full opacity-50"></div>
         
         <header class="relative z-10 mb-8">
-            <h1 class="text-2xl sm:text-3xl font-black text-red-700 text-center flex flex-col sm:flex-row justify-center items-center gap-1">
-                <span>🏮 台北三區 🏮</span>
-                <span>每日速速回報</span>
+            <h1 class="text-2xl sm:text-3xl font-black text-pink-600 text-center flex flex-col sm:flex-row justify-center items-center gap-1">
+                <span>🌸 台北三區 ⚡</span>
+                <span class="text-blue-600">每日速速回報</span>
             </h1>
-            <div class="mt-2 h-1 w-24 bg-amber-500 mx-auto rounded-full"></div>
-            <p class="text-amber-700 mt-4 text-center text-sm sm:text-base font-bold italic">
-                🧧 祥龍獻瑞 ‧ 業績長紅 ‧ 開工大吉 🧧
+            <div class="mt-2 h-1 w-24 bg-yellow-400 mx-auto rounded-full"></div>
+            <p class="text-pink-500 mt-4 text-center text-sm sm:text-base font-bold italic">
+                🌸 櫻花綻放 ‧ 寶可夢30週年 ‧ 收服業績 ⚡
             </p>
         </header>
 
@@ -108,8 +128,11 @@
             <!-- 基礎資訊 -->
             <section class="p-4 bg-red-50 rounded-xl border border-red-200 shadow-sm">
                 <h2 class="text-md sm:text-lg font-bold text-red-800 mb-4 flex items-center gap-2">
-                    <span class="bg-red-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">1</span>
-                    基本資訊回報
+                    <span class="text-2xl sm:text-3xl font-black text-blue-700 drop-shadow-sm">1</span>
+                    <div class="w-12 h-12 shrink-0">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png" alt="皮卡丘" class="w-full h-full object-contain drop-shadow-md hover:scale-110 transition-transform">
+                    </div>
+                    <span>基本資訊回報</span>
                 </h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
@@ -126,8 +149,11 @@
             <!-- 外撥數據 -->
             <section class="p-4 bg-amber-50 rounded-xl border border-amber-200 shadow-sm">
                 <h2 class="text-md sm:text-lg font-bold text-amber-900 mb-4 flex items-center gap-2">
-                    <span class="bg-amber-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">2</span>
-                    今日外撥成效
+                    <span class="text-2xl sm:text-3xl font-black text-blue-700 drop-shadow-sm">2</span>
+                    <div class="w-12 h-12 shrink-0">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png" alt="皮卡丘" class="w-full h-full object-contain drop-shadow-md hover:scale-110 transition-transform">
+                    </div>
+                    <span>今日外撥成效</span>
                 </h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="bg-white/80 p-3 rounded-lg border border-amber-100">
@@ -150,8 +176,11 @@
             <!-- 到店概況 -->
             <section class="p-4 bg-emerald-50 rounded-xl border border-emerald-200 shadow-sm">
                 <h2 class="text-md sm:text-lg font-bold text-emerald-900 mb-4 flex items-center gap-2">
-                    <span class="bg-emerald-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">3</span>
-                    今日到店活動
+                    <span class="text-2xl sm:text-3xl font-black text-blue-700 drop-shadow-sm">3</span>
+                    <div class="w-12 h-12 shrink-0">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png" alt="皮卡丘" class="w-full h-full object-contain drop-shadow-md hover:scale-110 transition-transform">
+                    </div>
+                    <span>今日到店活動</span>
                 </h2>
                 <div class="grid grid-cols-2 gap-3 mb-4">
                     <div class="col-span-1">
@@ -175,8 +204,11 @@
             <!-- 成果 -->
             <section class="p-4 bg-rose-50 rounded-xl border border-rose-200 shadow-sm">
                 <h2 class="text-md sm:text-lg font-bold text-rose-900 mb-4 flex items-center gap-2">
-                    <span class="bg-rose-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">4</span>
-                    試用與成交
+                    <span class="text-2xl sm:text-3xl font-black text-blue-700 drop-shadow-sm">4</span>
+                    <div class="w-12 h-12 shrink-0">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png" alt="皮卡丘" class="w-full h-full object-contain drop-shadow-md hover:scale-110 transition-transform">
+                    </div>
+                    <span>試用與成交</span>
                 </h2>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     <input type="number" id="trialHA" placeholder="試用 HA" class="p-3 border border-rose-200 rounded-lg text-sm">
@@ -184,17 +216,29 @@
                     <input type="number" id="dealHA" placeholder="成交 HA" class="p-3 border border-rose-200 rounded-lg text-sm">
                     <input type="number" id="dealAPAP" placeholder="成交 APAP" class="p-3 border border-rose-200 rounded-lg text-sm">
                 </div>
-                <div class="mt-4">
-                    <label class="block text-xs font-bold text-rose-800 mb-1">今日成交總金額 (萬)</label>
-                    <input type="number" id="dealTotalRevenue" placeholder="發發發" step="0.1" class="w-full p-3 border-2 border-rose-400 rounded-lg bg-white font-bold text-rose-700">
+                <div class="mt-4 pt-3 border-t border-rose-100">
+                    <label class="block text-xs font-bold text-rose-800 mb-2">今日成交總金額 (元)</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="flex items-center bg-white border border-rose-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-rose-500 focus-within:border-rose-500">
+                            <span class="bg-rose-50 text-rose-800 text-[10px] sm:text-xs font-bold px-2 sm:px-3 py-3 border-r border-rose-200 whitespace-nowrap">買斷</span>
+                            <input type="number" id="revenueOutright" placeholder="0" class="w-full p-2 sm:p-3 outline-none font-bold text-rose-700 bg-transparent text-sm">
+                        </div>
+                        <div class="flex items-center bg-white border border-rose-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-rose-500 focus-within:border-rose-500">
+                            <span class="bg-rose-50 text-rose-800 text-[10px] sm:text-xs font-bold px-2 sm:px-3 py-3 border-r border-rose-200 whitespace-nowrap">訂閱</span>
+                            <input type="number" id="revenueSubscription" placeholder="0" class="w-full p-2 sm:p-3 outline-none font-bold text-rose-700 bg-transparent text-sm">
+                        </div>
+                    </div>
                 </div>
             </section>
 
             <!-- 進度 -->
             <section class="p-4 bg-purple-50 rounded-xl border border-purple-200 shadow-sm">
                 <h2 class="text-md sm:text-lg font-bold text-purple-900 mb-4 flex items-center gap-2">
-                    <span class="bg-purple-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">5</span>
-                    當月試聽目標
+                    <span class="text-2xl sm:text-3xl font-black text-blue-700 drop-shadow-sm">5</span>
+                    <div class="w-12 h-12 shrink-0">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png" alt="皮卡丘" class="w-full h-full object-contain drop-shadow-md hover:scale-110 transition-transform">
+                    </div>
+                    <span>當月試聽目標</span>
                 </h2>
                 <div class="grid grid-cols-2 gap-3 mb-4">
                     <input type="number" id="monthlyTarget" placeholder="本月目標" class="p-3 border border-purple-200 rounded-lg text-sm">
@@ -203,20 +247,20 @@
                 <details class="bg-white/60 rounded-lg overflow-hidden border border-purple-100">
                     <summary class="p-2 text-xs font-bold text-purple-700 cursor-pointer hover:bg-purple-100">點此展開同仁目標參考名單</summary>
                     <div class="p-2 grid grid-cols-3 gap-1 text-[10px] leading-tight" id="refList">
-                        <!-- 名單略 -->
-                        <div class="flex justify-between border-b p-1"><span>許懿芬</span><b>6</b></div>
-                        <div class="flex justify-between border-b p-1"><span>吳碩修</span><b>9</b></div>
-                        <div class="flex justify-between border-b p-1"><span>蔡亞欣</span><b>14</b></div>
-                        <div class="flex justify-between border-b p-1"><span>郭瑋</span><b>18</b></div>
-                        <div class="flex justify-between border-b p-1"><span>林劭恩</span><b>10</b></div>
+                        <div class="flex justify-between border-b p-1"><span>許懿芬</span><b>7</b></div>
+                        <div class="flex justify-between border-b p-1"><span>吳碩修</span><b>11</b></div>
+                        <div class="flex justify-between border-b p-1"><span>蔡亞欣</span><b>13</b></div>
+                        <div class="flex justify-between border-b p-1"><span>郭瑋</span><b>20</b></div>
+                        <div class="flex justify-between border-b p-1"><span>林劭恩</span><b>14</b></div>
                         <div class="flex justify-between border-b p-1"><span>顧翠華</span><b>6</b></div>
-                        <div class="flex justify-between border-b p-1"><span>江浩誠</span><b>8</b></div>
-                        <div class="flex justify-between border-b p-1"><span>黃鈴鈞</span><b>7</b></div>
-                        <div class="flex justify-between border-b p-1"><span>許如汶</span><b>6</b></div>
-                        <div class="flex justify-between border-b p-1"><span>葉淳妤</span><b>5</b></div>
-                        <div class="flex justify-between border-b p-1"><span>詹婷婷</span><b>6</b></div>
-                        <div class="flex justify-between border-b p-1"><span>劉吉爾</span><b>6</b></div>
-                        <div class="flex justify-between border-b p-1"><span>林湘筑</span><b>6</b></div>
+                        <div class="flex justify-between border-b p-1"><span>江浩誠</span><b>13</b></div>
+                        <div class="flex justify-between border-b p-1"><span>黃鈴鈞</span><b>9</b></div>
+                        <div class="flex justify-between border-b p-1"><span>許如汶</span><b>8</b></div>
+                        <div class="flex justify-between border-b p-1"><span>葉淳妤</span><b>6</b></div>
+                        <div class="flex justify-between border-b p-1"><span>詹婷婷</span><b>9</b></div>
+                        <div class="flex justify-between border-b p-1"><span>葉純妤</span><b>7</b></div>
+                        <div class="flex justify-between border-b p-1"><span>劉吉爾</span><b>8</b></div>
+                        <div class="flex justify-between border-b p-1"><span>林湘筑</span><b>7</b></div>
                         <div class="flex justify-between border-b p-1"><span>陳玥璇</span><b>5</b></div>
                     </div>
                 </details>
@@ -225,8 +269,11 @@
             <!-- 明日計畫 -->
             <section class="p-4 bg-orange-50 rounded-xl border border-orange-200 shadow-sm">
                 <h2 class="text-md sm:text-lg font-bold text-orange-900 mb-4 flex items-center gap-2">
-                    <span class="bg-orange-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">6</span>
-                    明日戰鬥計畫
+                    <span class="text-2xl sm:text-3xl font-black text-blue-700 drop-shadow-sm">6</span>
+                    <div class="w-12 h-12 shrink-0">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png" alt="皮卡丘" class="w-full h-full object-contain drop-shadow-md hover:scale-110 transition-transform">
+                    </div>
+                    <span>明日戰鬥計畫</span>
                 </h2>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4">
                     <div class="flex flex-col"><span class="text-[10px] text-gray-500">預約總數</span><input type="number" id="tomorrowAppointments" class="p-2 border rounded"></div>
@@ -257,40 +304,72 @@
             </section>
 
             <div class="pt-4">
-                <button type="button" onclick="generateReport()" class="w-full bg-red-600 hover:bg-red-700 text-yellow-100 font-black py-5 px-4 rounded-2xl shadow-xl transition-all active:scale-95 border-b-8 border-red-800 text-xl flex items-center justify-center gap-3">
-                    🧨 生成開運報告 🧨
+                <button type="button" onclick="generateReport()" class="w-full bg-blue-600 hover:bg-blue-700 text-yellow-300 font-black py-5 px-4 rounded-2xl shadow-xl transition-all active:scale-95 border-b-8 border-blue-800 text-xl flex items-center justify-center gap-3">
+                    ⚡ 決定是你了！收服業績報告 🌸
                 </button>
             </div>
         </form>
 
-        <div id="outputArea" class="mt-10 pt-6 border-t-4 border-red-100 hidden">
+        <div id="outputArea" class="mt-10 pt-6 border-t-4 border-pink-100 hidden">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-red-800">📜 回報內容</h3>
-                <button onclick="copyToClipboard()" id="copyBtn" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded-full shadow-md text-sm transition-colors">
+                <h3 class="text-xl font-bold text-blue-800">📜 回報內容</h3>
+                <button onclick="copyToClipboard()" id="copyBtn" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-6 rounded-full shadow-md text-sm transition-colors">
                     點此複製
                 </button>
             </div>
-            <textarea id="reportOutput" rows="18" readonly class="w-full p-5 border-2 border-dashed border-red-300 bg-red-50/50 text-gray-800 rounded-2xl font-mono text-xs leading-relaxed focus:outline-none"></textarea>
+            <textarea id="reportOutput" rows="18" readonly class="w-full p-5 border-2 border-dashed border-pink-300 bg-pink-50/50 text-gray-800 rounded-2xl font-mono text-xs leading-relaxed focus:outline-none"></textarea>
         </div>
         
         <footer class="mt-8 text-center text-[10px] text-gray-400">
-            © 2025 台北三區業績長紅生成器
+            © 2026 台北三區業績長紅生成器
         </footer>
     </div>
 
     <script>
         let lastUserData = null;
+        let petalInterval;
 
         // 初始化
         window.onload = () => {
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('reportDate').value = today;
 
+            // 啟動背景櫻花飄落特效
+            startPetalEffect();
+
             // 監聽姓名輸入
             document.getElementById('userName').addEventListener('input', function(e) {
                 checkHistory(e.target.value);
             });
         };
+
+        // 背景連續櫻花特效
+        function startPetalEffect() {
+            petalInterval = setInterval(() => {
+                const container = document.getElementById('petalContainer');
+                if (!container) return;
+                
+                const petal = document.createElement('div');
+                petal.className = 'petal';
+                
+                // 隨機選擇櫻花圖案及大小
+                const sakuraTypes = ['🌸', '💮', '🌸'];
+                petal.innerText = sakuraTypes[Math.floor(Math.random() * sakuraTypes.length)];
+                petal.style.fontSize = (Math.random() * 12 + 10) + 'px'; // 10px ~ 22px
+                
+                // 隨機起始水平位置
+                petal.style.left = (Math.random() * 110 - 5) + 'vw'; 
+                
+                // 隨機掉落時間 6~12 秒，產生錯落感
+                const duration = Math.random() * 6 + 6;
+                petal.style.animationDuration = duration + 's';
+                
+                container.appendChild(petal);
+                
+                // 動畫結束後自動清理節點
+                setTimeout(() => petal.remove(), duration * 1000);
+            }, 350); // 每 350 毫秒產生一片櫻花
+        }
 
         // 檢查歷史紀錄
         function checkHistory(name) {
@@ -338,8 +417,8 @@
 
         function spawnHongbao() {
             const container = document.getElementById('hongbaoContainer');
-            const icons = ['🧧', '🧧', '🧧', '✨', '🏮', '🍊'];
-            const count = 30;
+            const icons = ['🌸', '🌸', '🌸', '⚡', '🔴', '🐢', '🦖', '🐉', '✨'];
+            const count = 50; // 增加按鈕點擊時的爆發數量
 
             for (let i = 0; i < count; i++) {
                 setTimeout(() => {
@@ -387,7 +466,8 @@
                 trialAPAP: getVal('trialAPAP'),
                 dealHA: getVal('dealHA'),
                 dealAPAP: getVal('dealAPAP'),
-                dealTotalRevenue: getVal('dealTotalRevenue'),
+                revenueOutright: getVal('revenueOutright'),
+                revenueSubscription: getVal('revenueSubscription'),
                 monthlyTarget: getVal('monthlyTarget'),
                 monthlyCumulative: getVal('monthlyCumulative'),
                 tomorrowAppointments: getVal('tomorrowAppointments'),
@@ -412,12 +492,12 @@
             const mCum = parseInt(formData.monthlyCumulative) || 0;
             const mMis = Math.max(0, mTar - mCum);
 
-            const report = `【${formattedDate}｜姓名：${name}】
+            const report = `【🌸 ${formattedDate}｜訓練家：${name} ⚡】
 今日外撥：新客 ${formData.callsNew} 通 (邀約 ${formData.callsNewInvited} 位) | 舊客 ${formData.callsOld} 通 (邀約 ${formData.callsOldInvited} 位)
 今日預約：${formData.appointmentsToday} 位
 今日到店：${formData.storeVisitsTotal} 位 (${formData.visitsHA_New}位HA新客、${formData.visitsHA_Expired}位HA過保、${formData.visitsHA_InWarranty}位HA保內、${formData.visitsRS}位RS、${formData.visitsOther}位其他)
 　試用：HA ${formData.trialHA} 位 ・APAP ${formData.trialAPAP} 位
-　成交：HA ${formData.dealHA} 位 ・APAP ${formData.dealAPAP} 位 (金額 ${formData.dealTotalRevenue} 萬)
+　成交：HA ${formData.dealHA} 位 ・APAP ${formData.dealAPAP} 位 (金額：買斷 ${formData.revenueOutright} 元、訂閱 ${formData.revenueSubscription} 元)
 
 當月試聽進度：
 👉 目標 ${mTar} 位｜累計 ${mCum} 位｜尚缺 ${mMis} 位
@@ -444,10 +524,10 @@ ${formData.callListTomorrow || '無'}`;
             
             const oldText = btn.textContent;
             btn.textContent = '✅ 已複製！';
-            btn.classList.replace('bg-amber-500', 'bg-green-600');
+            btn.classList.replace('bg-pink-500', 'bg-green-600');
             setTimeout(() => {
                 btn.textContent = oldText;
-                btn.classList.replace('bg-green-600', 'bg-amber-500');
+                btn.classList.replace('bg-green-600', 'bg-pink-500');
             }, 2000);
         }
     </script>
